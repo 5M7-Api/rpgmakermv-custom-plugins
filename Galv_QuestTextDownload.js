@@ -1,14 +1,16 @@
 /*:
  * @plugindesc 此插件用于手动下载任务系统的 Quests.txt 配置文件
  * @author 5M7_Api
- *
+ * @link https://github.com/5M7-Api/rpgmakermv-custom-plugins
  * @help
  * 
  * 在游戏启动的标题画面会出现对应选项，点击自动下载txt文件。
  * 
  * 元数据在 questList 对象内配置所有任务消息，生成的 txt 配置文件必须搭配 Galv_QuestLog.js 插件使用。
  * 
- * 需注意应在正式打包工程文件时，删去该插件。
+ * 被依赖的插件来源：https://galvs-scripts.com/2016/11/11/mv-quest-log/
+ * 
+ * 需注意应在正式打包工程文件时，删去本插件。
  */
 
 (function () {
@@ -45,9 +47,9 @@
             reward: `\\i[297]弑天杀刃`
         },
     ];
-    // ------------------------------------------------------------------------
-
+   
     const rewardsTitle = `\n\\c[16]任务奖励: \n`;
+     // ------------------------------------------------------------------------
 
     // 生成 Quests.txt 文件内容
     function generateQuestFile() {
@@ -72,7 +74,6 @@
 
     // 下载 Quests.txt 文件
     function downloadQuestFile() {
-        console.log("开始下载任务系统的txt配置文件...");
         const content = generateQuestFile();
         const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
 
@@ -89,7 +90,7 @@
 
     // ---------------- 修改标题菜单，添加下载选项 ------------------------
 
-    // 扩展标题命令窗口，添加 "下载任务配置" 选项
+    // 扩展标题命令窗口，添加 "下载txt任务配置" 选项
     const _Window_TitleCommand_makeCommandList = Window_TitleCommand.prototype.makeCommandList;
     Window_TitleCommand.prototype.makeCommandList = function () {
         _Window_TitleCommand_makeCommandList.call(this);
