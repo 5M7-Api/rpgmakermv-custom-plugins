@@ -18,7 +18,7 @@
     
     var parameters = PluginManager.parameters('Window_Coordinate')
     var isFullScreen = parameters['fullScreen'] == 'true';
-     isFullScreen && Graphics._switchFullScreen()
+     isFullScreen && Graphics._requestFullScreen()
 
     // 创建一个全局变量来存储鼠标坐标显示的 Sprite
     var mouseTextSprite;
