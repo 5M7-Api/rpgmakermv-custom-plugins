@@ -15,14 +15,14 @@
 
 (function () {
     'use strict';
-    
+
     var parameters = PluginManager.parameters('Window_Coordinate')
     var isFullScreen = parameters['fullScreen'] == 'true';
-     isFullScreen && Graphics._requestFullScreen()
+    isFullScreen && Graphics._requestFullScreen()
 
     // 创建一个全局变量来存储鼠标坐标显示的 Sprite
     var mouseTextSprite;
-    
+
     /**
      * 在指定的场景中创建鼠标位置显示的 UI
      * @param {Scene_Base} scene - 当前的 RPG Maker 场景
@@ -74,6 +74,13 @@
     var _Scene_Map_createAllWindows = Scene_Map.prototype.createAllWindows;
     Scene_Map.prototype.createAllWindows = function () {
         _Scene_Map_createAllWindows.call(this);
+        addMouseTrackerToScene(this);
+    };
+
+    // 在游戏菜单界面 Scene_Menu 添加鼠标坐标 UI
+    var _Scene_MenuBase_create = Scene_MenuBase.prototype.create;
+    Scene_MenuBase.prototype.create = function () {
+        _Scene_MenuBase_create.call(this);
         addMouseTrackerToScene(this);
     };
 })();
