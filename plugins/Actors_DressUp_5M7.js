@@ -19,10 +19,10 @@
  * @desc 单位：像素，需注意这里至少要大于100，否则会遮挡到默认菜单的说明栏。
  * @type number
  * 
- * @param armorReverse
- * @default false
- * @desc 护甲立绘的先后覆盖顺序是否反转。
- * @type boolean
+ * @param orderArray
+ * @default ["5","1","2","3","4"]
+ * @desc 护甲立绘的先后覆盖顺序。(1：盾牌 2：头部 3：身体 4：装饰品 5：武器)
+ * @type number[]
  *
  *
  * @help 
@@ -47,11 +47,11 @@
   var equipImgMap = {
     1: {
       weapon: [5],
-      armor: [9],
+      armor: [9, 13],
     },
     2: {
       weapon: [6],
-      armor: [9, 10, 11, 12],
+      armor: [9, 10, 11, 12, 13],
     },
   }
 
@@ -67,7 +67,8 @@
   var X_OFFSET = Number(parameters["xOffset"] || 180);
   var imageX = Number(parameters["arisX"] || 0)
   var imageY = Number(parameters["arisY"] || 100)
-  var isArmorReverse = parameters["armorReverse"] == "true"
+  var imageOrder = JSON.parse(parameters["orderArray"] || '[]').map(Number);
+  console.log(imageOrder, typeof imageOrder)
   // -------------------------------------------------------------------------------------------
   Scene_Equip.prototype.create = function () {
     Scene_MenuBase.prototype.create.call(this);
@@ -165,31 +166,30 @@
   };
 
   // 初始化精灵图对象
-  Scene_Equip.prototype.initEquipSprite = function (isReverse) {
-    if (isReverse) {
-      for (var i = (ARMOR_COUNT + WEAPON_COUNT) - 1; i >= 0; i--) {
-        if (!this._equipPictrues[i]) {
-          this._equipPictrues[i] = new Sprite();
-          this._equipPictrues[i].move(imageX, imageY);
-          this.addChild(this._equipPictrues[i]);
-        } else {
-          // 如果已经存在，清除旧的装备图片
-          this._equipPictrues[i].bitmap = ImageManager.loadEmptyBitmap();
-        }
-      }
-    } else {
-      for (var i = 0; i < (ARMOR_COUNT + WEAPON_COUNT); i++) {
-        if (!this._equipPictrues[i]) {
-          this._equipPictrues[i] = new Sprite();
-          this._equipPictrues[i].move(imageX, imageY);
-          this.addChild(this._equipPictrues[i]);
-        } else {
-          // 如果已经存在，清除旧的装备图片
-          this._equipPictrues[i].bitmap = ImageManager.loadEmptyBitmap();
-        }
+  Scene_Equip.prototype.initEquipSprite = function (orderArray) {
+    var count = ARMOR_COUNT + WEAPON_COUNT;
+    if (!this._equipPictrues) {
+      throw new Error("请先初始化调用initActorPicture方法！")
+    }
+
+    // 默认顺序：[1, 2, 3, 4, 5] → 实际索引：[0, 1, 2, 3, 4]
+    var indexes = orderArray
+      ? orderArray.map(i => i - 1) // 转换为从 0 开始的索引
+      : [...Array(count).keys()];  // 默认正序索引 [0, 1, 2, 3, 4]
+
+    // 逆循环倒置覆盖顺序
+    for (var i = indexes.length - 1; i >= 0; i--) {
+      var idx = indexes[i];
+      if (!this._equipPictrues[idx]) {
+        this._equipPictrues[idx] = new Sprite();
+        this._equipPictrues[idx].move(imageX, imageY);
+        this.addChild(this._equipPictrues[idx]);
+      } else {
+        this._equipPictrues[idx].bitmap = ImageManager.loadEmptyBitmap();
       }
     }
-  }
+  };
+
 
   // 初始化换装立绘系统
   Scene_Equip.prototype.initActorPicture = function (actorId) {
@@ -212,7 +212,7 @@
     }
 
     // 初始化精灵图装备图片（注意立绘层面正逆向覆盖顺序！）
-    this.initEquipSprite(isArmorReverse)
+    this.initEquipSprite(imageOrder)
     // 重加载角色的装备立绘
     this.updateEquipPictrues(actorId);
   };
@@ -242,7 +242,7 @@
 
   // 读取立绘的实际方法,返回对应装备立绘的文件路径
   Scene_Equip.prototype.loadEquipPictrues = function (actorId, picType, spriteId, equipObj) {
-    // console.log("装备类型对象", equipObj);
+    // console.log("装备类型对象", equipObj,spriteId);
 
     var isImageRender = equipImgMap[actorId][picType].includes(equipObj.id);
     var filePath;
