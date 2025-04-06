@@ -30,7 +30,7 @@
  * 1、所有角色需要根据其rmmv数据库角色id创建对应的文件夹actor_[id]，此文件夹下需要放置对应角色的白身立绘player.png。
  * （如：actor_1文件夹下放置player.png，actor_2文件夹下放置player.png）
  * 
- * 2、所有actor_[id]文件夹下创建default文件夹，其中需放置没有指定立绘的初始装备立绘图像weapon_1.png以及armor_2/3/4/5.png。
+ * 2、所有actor_[id]文件夹下创建default文件夹，其中需放置没有指定立绘的初始装备立绘图像weapon_1.png以及armor_2/3/4/5.png。（1：武器 2：盾牌 3：头部 4：衣服 5：装饰品）
  * 
  * 3、equipMap中配置各个角色id的可穿戴装备的立绘图像，数组内对应rmmv中数据库装备id和立绘png文件的后缀数字。需保证立绘文件中一定存在该后缀图片。
  * 
