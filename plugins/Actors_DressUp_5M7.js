@@ -35,6 +35,8 @@
  * 3、equipMap中配置各个角色id的可穿戴装备的立绘图像，数组内对应rmmv中数据库装备id和立绘png文件的后缀数字。需保证立绘文件中一定存在该后缀图片。
  * 
  * 4、将各个可穿戴装备的立绘图像放置于actor_[id]文件夹下，并命名为对应装备的名称，如：weapon_1.png、armor_2.png。后缀数字对应3中的装备id。
+ * 
+ * 5、将本插件在代码编辑器内打开，手动填写equipMap的立绘映射，数组内的数字为每个actor文件夹下已有的weapon或armor的后缀序号。
  */
 
 (function () {
@@ -53,6 +55,8 @@
       weapon: [6],
       armor: [9, 10, 11, 12, 13],
     },
+
+    // 有几个角色写几个序号，序号就是角色的id
   }
 
   // ------------------------------------------------------------------------------------------
@@ -242,7 +246,7 @@
 
   // 读取立绘的实际方法,返回对应装备立绘的文件路径
   Scene_Equip.prototype.loadEquipPictrues = function (actorId, picType, spriteId, equipObj) {
-    // console.log("装备类型对象", equipObj,spriteId);
+    console.log("装备类型对象", equipObj,spriteId);
 
     var isImageRender = equipImgMap[actorId][picType].includes(equipObj.id);
     var filePath;
@@ -308,7 +312,7 @@
       }
     }
 
-    // console.log("装备图片缓存", this._equipImageCache);
+    console.log("装备图片缓存", this._equipImageCache);
   };
 
   // 返回对应角色已装备的装备立绘的文件路径
