@@ -188,7 +188,7 @@
         var playerWeapons = $gameActors.actor(actorId).weapons();
         var actorSuitData = suitImgMap[actorId];
         var newPath = `img/player/actor_${actorId}/default.png`; // 默认路径
-        var matched = false;
+        // var matched = false;
 
         for (const key in actorSuitData) {
             if (!Array.isArray(actorSuitData[key]) || actorSuitData[key].length !== 2) {
@@ -209,7 +209,7 @@
 
             if (isWeaponMatch && isArmorMatch) {
                 newPath = `img/player/actor_${actorId}/${key}.png`;
-                matched = true;
+                // matched = true;
                 // console.log("套装匹配成功", key);
                 break;
             } else {
