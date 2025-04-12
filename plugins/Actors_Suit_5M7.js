@@ -39,7 +39,7 @@
      */
     var suitImgMap = {
         1: {
-            Alice: [[7], [14, 16, 17, 18]],
+            Alice: [[7], [14, 16, 17, 18]], // 对应 Alice.png
         },
         2: {
             Asuka: [[], [19, 20, 21]]
@@ -58,7 +58,7 @@
     // -------------------------------------------------------------------------------------------
     Scene_Equip.prototype.create = function () {
         Scene_MenuBase.prototype.create.call(this);
-        this._equipImageCache = {}; // 存储装备立绘的 URL
+        this._equipImageCache = []; // 存储装备立绘的 URL
         this.createHelpWindow();
         this.createStatusWindow();
         this.createCommandWindow();
