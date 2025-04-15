@@ -4,6 +4,9 @@
  * @link https://github.com/5M7-Api/rpgmakermv-custom-plugins
  * 
  * @help
+ * 
+ * 影片需存放在根目录的movies文件夹中。
+ * 
  * 需注意如果是在移动设备的情况下，只能播放mp4格式的视频，建议放入两种格式的同名文件来适配不同设备。
  * 
  * 依赖插件的链接：https://github.com/5M7-Api/rpgmakermv-custom-plugins
