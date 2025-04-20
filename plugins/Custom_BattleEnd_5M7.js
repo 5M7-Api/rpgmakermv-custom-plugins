@@ -37,9 +37,8 @@
     var defaultDefeatMessage = '关键角色倒下了，战斗失败！';
 
     // 首领击败的额外的动画序列操作（防止异步冲突）
-    Window_BattleLog.prototype.addBossCollapseAndVictory = function () {
-        var msg = this._victoryBossMessage
-        this.push('addText', msg);
+    Window_BattleLog.prototype.addBossCollapseAndVictory = function (message) {
+        this.push('addText', message);
         this.push('wait');
         this.push('performEnemyEscape');
         this.push('wait');
@@ -84,30 +83,23 @@
                 return true;
             }
 
-            // console.log('敌人信息', $gameTroop.members().map(enemy => enemy.enemy()))
-
             // ✅ 新增逻辑：如果敌群中有带 <VictoryTarget> 标签的敌人死亡
             var victoryTargetDead = $gameTroop.members().some(enemy => {
                 return enemy.isDead() && enemy.enemy().meta.VictoryTarget;
             });
+            console.log('@@ checkBattleEnd: victoryTargetDead', victoryTargetDead)
 
             if (victoryTargetDead) {
-                // 防止多次触发
-                if (!this._bossVictoryHandled) {
-                    this._bossVictoryHandled = true;
-                    // 找到第一个被击杀的带 VictoryTarget 标签的敌人
-                    var boss = $gameTroop.members().find(function (enemy) {
-                        return enemy.isDead() && enemy.enemy().meta.VictoryTarget;
-                    });
+                // 找到第一个被击杀的带 VictoryTarget 标签的敌人
+                var boss = $gameTroop.members().find(function (enemy) {
+                    return enemy.isDead() && enemy.enemy().meta.VictoryTarget;
+                });
 
-                    // 从备注中获取自定义胜利提示
-                    var message = (boss && boss.enemy().meta.VictoryTargetMessage) || defaultBossCollapseMessage;
+                // 从备注中获取自定义胜利提示
+                var message = (boss && boss.enemy().meta.VictoryTargetMessage) || defaultBossCollapseMessage;
 
-                    // 传入自定义信息
-                    this._logWindow._victoryBossMessage = message;
-                    this._logWindow.push('addBossCollapseAndVictory');
-                    return true;
-                }
+                // 传入自定义信息
+                this._logWindow.push('addBossCollapseAndVictory',message);
                 return true;
             }
 
@@ -116,7 +108,7 @@
                 return actor.isDead() && actor.actor().meta.DefeatTarget;
             });
 
-            if (defeatTarget && !this._keyDefeatHandled) {
+            if (defeatTarget ) {
                 this._keyDefeatHandled = true;
                 var defeatMessage = defeatTarget.actor().meta.DefeatTargetMessage || defaultDefeatMessage;
                 this._logWindow.push('addDefeatMessage', defeatMessage);
@@ -137,7 +129,7 @@
         // 战败逻辑
         else if (this._keyDefeatHandled) { SceneManager.goto(Scene_Gameover); } // 添加重要人物死亡后Game over的逻辑
         else if (!this._escaped && $gameParty.isAllDead()) {
-            
+
             if (this._canLose) {
                 $gameParty.reviveBattleMembers(); // 恢复队伍成员状态
                 SceneManager.pop();               // 返回上一场景（通常是地图）
