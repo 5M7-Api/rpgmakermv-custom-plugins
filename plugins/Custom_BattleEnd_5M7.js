@@ -3,6 +3,18 @@
  * @author 5M7-Api
  * @link https://github.com/5M7-Api/rpgmakermv-custom-plugins
  *
+ * @param ShowVictoryMessage
+ * @text 显示胜利提示文本
+ * @desc 敌方首领死亡后是否显示提示文本（true/false）
+ * @type boolean
+ * @default true
+ *
+ * @param ShowDefeatMessage
+ * @text 显示失败提示文本
+ * @desc 我方关键角色死亡后是否显示提示文本（true/false）
+ * @type boolean
+ * @default true
+ *
  * @help
  * ◆ 插件说明：
  * 本插件用于增强 RPG Maker MV 的战斗系统。
@@ -31,15 +43,23 @@
  * - 若有改动 BattleManager.updateBattleEnd 的插件请注意冲突
  * ◆ 作者：5M7-Api
  */
+
 (function () {
+
+    // 🔧 获取插件参数
+    var parameters = PluginManager.parameters('Custom_BattleEnd_5M7'); 
+    var showVictoryMessage = String(parameters['ShowVictoryMessage'] || 'true') === 'true';
+    var showDefeatMessage = String(parameters['ShowDefeatMessage'] || 'true') === 'true';
 
     var defaultBossCollapseMessage = '首领倒下了！其余敌人落荒而逃！';
     var defaultDefeatMessage = '关键角色倒下了，战斗失败！';
 
     // 首领击败的额外的动画序列操作（防止异步冲突）
     Window_BattleLog.prototype.addBossCollapseAndVictory = function (message) {
-        this.push('addText', message);
-        this.push('wait');
+        if (showVictoryMessage) {
+            this.push('addText', message);
+            this.push('wait');
+        }
         this.push('performEnemyEscape');
         this.push('wait');
         this.push('forceVictory');
@@ -60,8 +80,10 @@
 
     // 我方重要角色被击败的额外的动画序列操作（防止异步冲突）
     Window_BattleLog.prototype.addDefeatMessage = function (message) {
-        this.push('addText', message);
-        this.push('wait');
+        if (showDefeatMessage) {
+            this.push('addText', message);
+            this.push('wait');
+        }
         this.push('forceDefeat');
     };
 
@@ -69,7 +91,7 @@
         BattleManager.processDefeat();
     };
 
-    /** 根据战斗阶段判断是否触发胜利、失败或中止等条件。（ */
+    /** 根据战斗阶段判断是否触发胜利、失败或中止等条件。 */
     BattleManager.checkBattleEnd = function () {
         // ✅ 原始逻辑：中断、我方全灭、敌方全灭
         if (this._phase) {
@@ -84,7 +106,7 @@
             }
 
             // ✅ 新增逻辑：如果敌群中有带 <VictoryTarget> 标签的敌人死亡
-            var victoryTargetDead = $gameTroop.members().some(enemy => {
+            var victoryTargetDead = $gameTroop.members().some(function (enemy) {
                 return enemy.isDead() && enemy.enemy().meta.VictoryTarget;
             });
             console.log('@@ checkBattleEnd: victoryTargetDead', victoryTargetDead)
@@ -99,7 +121,7 @@
                 var message = (boss && boss.enemy().meta.VictoryTargetMessage) || defaultBossCollapseMessage;
 
                 // 传入自定义信息
-                this._logWindow.push('addBossCollapseAndVictory',message);
+                this._logWindow.push('addBossCollapseAndVictory', message);
                 return true;
             }
 
@@ -108,7 +130,7 @@
                 return actor.isDead() && actor.actor().meta.DefeatTarget;
             });
 
-            if (defeatTarget ) {
+            if (defeatTarget) {
                 this._keyDefeatHandled = true;
                 var defeatMessage = defeatTarget.actor().meta.DefeatTargetMessage || defaultDefeatMessage;
                 this._logWindow.push('addDefeatMessage', defeatMessage);
@@ -127,8 +149,9 @@
         }
 
         // 战败逻辑
-        else if (this._keyDefeatHandled) { SceneManager.goto(Scene_Gameover); } // 添加重要人物死亡后Game over的逻辑
-        else if (!this._escaped && $gameParty.isAllDead()) {
+        else if (this._keyDefeatHandled) {
+            SceneManager.goto(Scene_Gameover); // 添加重要人物死亡后Game over的逻辑
+        } else if (!this._escaped && $gameParty.isAllDead()) {
 
             if (this._canLose) {
                 $gameParty.reviveBattleMembers(); // 恢复队伍成员状态
