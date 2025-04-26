@@ -109,7 +109,7 @@
             var victoryTargetDead = $gameTroop.members().some(function (enemy) {
                 return enemy.isDead() && enemy.enemy().meta.VictoryTarget;
             });
-            console.log('@@ checkBattleEnd: victoryTargetDead', victoryTargetDead)
+            // console.log('@@ checkBattleEnd: victoryTargetDead', victoryTargetDead)
 
             if (victoryTargetDead) {
                 // 找到第一个被击杀的带 VictoryTarget 标签的敌人
