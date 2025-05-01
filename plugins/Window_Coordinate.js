@@ -83,4 +83,11 @@
         _Scene_MenuBase_create.call(this);
         addMouseTrackerToScene(this);
     };
+
+    // 在战斗界面 Scene_Battle 添加鼠标坐标 UI
+    var _Scene_Battle_createDisplayObjects = Scene_Battle.prototype.createDisplayObjects;
+    Scene_Battle.prototype.createDisplayObjects = function () {
+        _Scene_Battle_createDisplayObjects.call(this);
+        addMouseTrackerToScene(this);
+    };
 })();
