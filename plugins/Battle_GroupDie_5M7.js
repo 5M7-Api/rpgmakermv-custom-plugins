@@ -31,7 +31,7 @@
     _Game_Enemy_die.call(this);
     // console.log('敌人死亡：', this._enemyGroupId, this._isTrigger, this._isTriggerAll)
     if (!this._enemyGroupId) return;
-    if (_processedGroups.contains(this._enemyGroupId)) return;
+    if (_processedGroups.contains(this._enemyGroupId)) return; // 防止死循环
 
     var groupId = this._enemyGroupId;
 
@@ -80,7 +80,7 @@
 
   var _Game_Troop_setup = Game_Troop.prototype.setup;
   Game_Troop.prototype.setup = function (troopId) {
-    _processedGroups = [];
+    _processedGroups = []; // 重载初始化
     _Game_Troop_setup.call(this, troopId);
   };
 })();

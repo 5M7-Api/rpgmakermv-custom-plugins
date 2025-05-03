@@ -28,7 +28,7 @@
                     var x = this.getNoteTagNumber(note, 'X');
                     var y = this.getNoteTagNumber(note, 'Y');
                     var z = this.getNoteTagNumber(note, 'Z');
-
+                    // 需注意 _homeX, _homeY 不代表画面上的原本坐标位置，考虑offset偏差
                     if (x !== null) sprite._homeX = x;
                     if (y !== null) sprite._homeY = y;
                     if (z !== null) sprite.z = z;

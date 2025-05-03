@@ -47,7 +47,6 @@
 
         if (msgData && msgData.encounter) {
             $gameMessage.add(msgData.encounter);
-            $gameTroop.makeUniqueNames();
         } else {
             _BattleManager_displayStartMessages.call(this);
         }
