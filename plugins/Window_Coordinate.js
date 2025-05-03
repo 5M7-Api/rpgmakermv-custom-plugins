@@ -20,6 +20,12 @@
     var isFullScreen = parameters['fullScreen'] == 'true';
     isFullScreen && Graphics._requestFullScreen()
 
+    // 全局记录上一次点击坐标和上一次差值
+    var lastClickX = null;
+    var lastClickY = null;
+    var lastDeltaX = 0;
+    var lastDeltaY = 0;
+
     // 创建一个全局变量来存储鼠标坐标显示的 Sprite
     var mouseTextSprite;
 
@@ -28,7 +34,7 @@
      * @param {Scene_Base} scene - 当前的 RPG Maker 场景
      */
     function createMousePositionDisplay(scene) {
-        mouseTextSprite = new Sprite(new Bitmap(250, 50)); // 创建 250x50 的位图
+        mouseTextSprite = new Sprite(new Bitmap(250, 75)); // 创建 250x75 的位图
         mouseTextSprite.x = 10; // X 位置
         mouseTextSprite.y = 10; // Y 位置
         mouseTextSprite.bitmap.fontSize = 20; // 设置字体大小
@@ -43,11 +49,28 @@
      */
     function updateMousePosition(maxWidth, maxHeight) {
         if (mouseTextSprite) {
-            var x = TouchInput.x; // 向上取整
-            var y = TouchInput.y;
-            mouseTextSprite.bitmap.clear(); // 清除上次绘制的文本
+            const x = TouchInput.x;
+            const y = TouchInput.y;
+
+            if (TouchInput.isTriggered()) {
+                // 鼠标点击：计算差值并保存
+                if (lastClickX !== null && lastClickY !== null) {
+                    lastDeltaX = x - lastClickX;
+                    lastDeltaY = y - lastClickY;
+                } else {
+                    lastDeltaX = 0;
+                    lastDeltaY = 0;
+                }
+
+                lastClickX = x;
+                lastClickY = y;
+            }
+
+            // 绘制
+            mouseTextSprite.bitmap.clear();
             mouseTextSprite.bitmap.drawText(`X: ${x} / ${maxWidth}`, 0, 0, 250, 25, 'left');
             mouseTextSprite.bitmap.drawText(`Y: ${y} / ${maxHeight}`, 0, 25, 250, 25, 'left');
+            mouseTextSprite.bitmap.drawText(`ΔX: ${lastDeltaX}   ΔY: ${lastDeltaY}`, 0, 50, 250, 25, 'left');
         }
     }
 
