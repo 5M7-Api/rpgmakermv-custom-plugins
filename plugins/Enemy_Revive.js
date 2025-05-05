@@ -35,6 +35,8 @@
         this._reviveLimit = -1;
         this._reviveCount = 0;
         this._reviveHpRate = 100; // 默认 100%
+        this._reviveMsg = null;
+
     };
 
     var _Game_Enemy_die = Game_Enemy.prototype.die;
@@ -45,6 +47,7 @@
             var delay = Number(match[1]);
             var limit = match[2] ? Number(match[2]) : -1;
             var hpRate = match[3] ? Number(match[3]) : 100;
+            var reviveMsgMatch = note.match(/<ReviveMsg:(.+?)>/i);
 
             if (this._reviveLimit >= 0 && this._reviveCount >= this._reviveLimit) {
                 _Game_Enemy_die.call(this);
@@ -55,6 +58,7 @@
             this._feignDeathCounter = delay;
             this._reviveLimit = limit;
             this._reviveHpRate = Math.min(Math.max(hpRate, 1), 100); // 限制在 1~100 之间
+            this._reviveMsg = reviveMsgMatch ? reviveMsgMatch[1] : (this.name() + ' 复活了！');
 
             this.performCollapse();
             var sprite = getEnemySprite(this);
@@ -94,9 +98,7 @@
                     sprite.opacity = 255;
                 }
 
-                var reviveMsgMatch = enemy.enemy().note.match(/<ReviveMsg:(.+?)>/i);
-                var reviveMsg = reviveMsgMatch ? reviveMsgMatch[1] : (enemy.name() + ' 复活了！');
-
+                var reviveMsg = enemy._reviveMsg || (enemy.name() + ' 复活了！');
                 if (BattleManager._logWindow) {
                     var logWindow = BattleManager._logWindow;
                     logWindow.push('addText', reviveMsg);
