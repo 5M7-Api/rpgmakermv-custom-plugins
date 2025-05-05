@@ -16,6 +16,13 @@
 
     var FEIGN_DEATH_TAG = /<FeignDeath:(\d+)(?:,(\d+))?(?:,(\d+))?>/i;
 
+    function waitForSeconds(logWindow, seconds) {
+        var frames = Math.round(seconds * 4);
+        for (var i = 0; i < frames; i++) {
+            logWindow.push('wait');
+        }
+    }
+    
     function getEnemySprite(enemy) {
         var spriteset = SceneManager._scene && SceneManager._scene._spriteset;
         if (!spriteset || !spriteset._enemySprites) return null;
@@ -68,7 +75,7 @@
                 feignDeathEnemies.push(this);
             }
 
-            // console.log('[FeignDeath] 敌人' + this.enemyId() + ' 进入假死：' + this._feignDeathCounter + ' 回合，最多复活 ' + (limit >= 0 ? limit : '无限') + ' 次，HP回复 ' + this._reviveHpRate + '%');
+            console.log('[FeignDeath] 敌人' + this.enemyId() + ' 进入假死：' + this._feignDeathCounter + ' 回合，最多复活 ' + (limit >= 0 ? limit : '无限') + ' 次，HP回复 ' + this._reviveHpRate + '%');
         } else {
             _Game_Enemy_die.call(this);
         }
@@ -82,7 +89,7 @@
             if (!enemy || !enemy._isFeignDeath) continue;
 
             enemy._feignDeathCounter--;
-            // console.log('[FeignDeath] 敌人' + enemy.enemyId() + ' 剩余复活回合: ' + enemy._feignDeathCounter);
+            console.log('[FeignDeath] 敌人' + enemy.enemyId() + ' 剩余复活回合: ' + enemy._feignDeathCounter);
 
             if (enemy._feignDeathCounter <= 0) {
                 enemy._isFeignDeath = false;
@@ -102,7 +109,8 @@
                 if (BattleManager._logWindow) {
                     var logWindow = BattleManager._logWindow;
                     logWindow.push('addText', reviveMsg);
-                    logWindow.push('wait');
+                    logWindow.push('waitForMovement'); // 等待消息滚动完成（适用于多行）
+                    waitForSeconds(logWindow, 1); // 等待1秒，太长了会导致战斗进程阻塞
                     logWindow.push('clear');
                 }
 
