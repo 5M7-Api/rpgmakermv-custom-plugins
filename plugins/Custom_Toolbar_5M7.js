@@ -29,7 +29,7 @@
 (function () {
     'use strict';
 
-    var FILENAME = 'Custom_Toolbar'; // 文件名
+    var FILENAME = 'Custom_Toolbar_5M7'; // 文件名
     var parameters = PluginManager.parameters(FILENAME);
     var button1Image = parameters['Button1Image'] || 'button1';
     var button2Image = parameters['Button2Image'] || 'button2';
