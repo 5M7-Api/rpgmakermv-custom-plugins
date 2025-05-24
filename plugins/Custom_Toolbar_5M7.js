@@ -39,21 +39,21 @@
     function clickedAnime(btnObj) {
         anime({
             targets: btnObj.scale,  // 动画的目标对象，这里是按钮的 scale 属性（即缩放对象）
-        
+
             // X 轴缩放动画序列
             x: [
                 { value: 1.2, duration: 80 }, // 第一步：在 80ms 内将 x 缩放值变为 1.2（放大）
                 { value: 0.9, duration: 80 }, // 第二步：在 80ms 内缩小到 0.9（比原始略小）
                 { value: 1.0, duration: 80 }  // 第三步：在 80ms 内恢复到原始大小 1.0
             ],
-        
+
             // Y 轴缩放动画序列（与 X 同步）
             y: [
                 { value: 1.2, duration: 80 }, // 同样的放大
                 { value: 0.9, duration: 80 }, // 同样的缩小
                 { value: 1.0, duration: 80 }  // 同样的恢复
             ],
-        
+
             easing: 'easeInOutQuad' // 使用「缓入缓出」的动画节奏（先慢→快→慢），让动画更自然
         });
     }
@@ -123,6 +123,11 @@
 
         // 可选存储
         this._mapButtons = [button1, button2];
+
+        // ✅ 按 z 值排序子元素（使覆盖层级生效）
+        this.children.sort(function (a, b) {
+            return (a.z || 0) - (b.z || 0);
+        });
     };
 })();
 
