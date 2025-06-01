@@ -167,6 +167,7 @@
             btn.bitmap = ImageManager.loadSystem(cfg.name);
             btn.x = cfg.x;
             btn.y = cfg.y;
+            btn.z = 1;
             bindAlphaHitTest(btn);
             scene.addChild(btn);
             scene._dpadButtons.push(btn);
