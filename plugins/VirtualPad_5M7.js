@@ -100,8 +100,16 @@
                 if (!this._tinting) this.animatePressEffect();
 
                 if (typeof this._inputType === 'number') {
-                    if (!$gamePlayer.isMoving()) {
-                        $gamePlayer.moveStraight(this._inputType); // 角色没有执行移动操作时才进行移动！
+                    // 数字方向键对应的 Input 名称映射
+                    var dirMap = {
+                        2: 'down',
+                        4: 'left',
+                        6: 'right',
+                        8: 'up'
+                    };
+                    var dir = dirMap[this._inputType];
+                    if (dir) {
+                        Input._currentState[dir] = true;
                     }
                 } else {
                     switch (this._inputType) {
@@ -120,6 +128,17 @@
             } else {
                 if (typeof this._inputType === 'string') {
                     Input._currentState[this._inputType] = false;
+                } else if (typeof this._inputType === 'number') {
+                    var dirMap = {
+                        2: 'down',
+                        4: 'left',
+                        6: 'right',
+                        8: 'up'
+                    };
+                    var dir = dirMap[this._inputType];
+                    if (dir) {
+                        Input._currentState[dir] = false;
+                    }
                 }
             }
         }
@@ -159,7 +178,7 @@
             { name: buttonMenu, type: 'menu', x: Graphics.width - 100, y: Graphics.height - 60 }
         ];
 
-        var allButtons = dirButtons.concat(funcButtons); 
+        var allButtons = dirButtons.concat(funcButtons);
 
         for (var i = 0; i < allButtons.length; i++) {
             var cfg = allButtons[i];
@@ -171,6 +190,7 @@
             bindAlphaHitTest(btn);
             scene.addChild(btn);
             scene._dpadButtons.push(btn);
+            // console.log('create virtual', cfg.name, 'at', cfg.x, cfg.y)
         }
     }
 
