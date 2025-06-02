@@ -3,6 +3,12 @@
  * @plugindesc 将素材创建成一个顶部导航栏的样式，并形成交互按钮。
  * @author 5M7_Api
  * @link https://github.com/5M7-Api/rpgmakermv-plugins-coding-course
+ * @help 
+ * 
+ * 该插件将在游戏地图画面上创建一个顶部导航栏，包含背景和按钮，可自定义扩展。
+ * 
+ * - 通过以下插件指令显示和隐藏导航栏
+ * Toolbar Show / Toolbar Hide：显示/隐藏导航栏
  * 
  * @param Button1Image
  * @text 按钮1图像
@@ -70,8 +76,8 @@
         window.open('https://space.bilibili.com/11635476/upload/video');
     }
 
-    var _Scene_Map_createAllWindows = Scene_Map.prototype.createAllWindows;
 
+    var _Scene_Map_createAllWindows = Scene_Map.prototype.createAllWindows;
     // 游戏地图画面添加这些元素
     Scene_Map.prototype.createAllWindows = function () {
         _Scene_Map_createAllWindows.call(this);
@@ -79,6 +85,7 @@
     };
 
     Scene_Map.prototype.createMapButtons = function () {
+        if (this._mapButtons || this._mapToolbarBackground) return; // 防止重复创建
         // 创建背景
         var background = new Sprite();
         background.bitmap = ImageManager.loadSystem(backgroundImage);
@@ -122,6 +129,7 @@
 
         // 可选存储
         this._mapButtons = [button1, button2];
+        this._mapToolbarBackground = background;
 
         // ✅ 按 z 值排序子元素（使覆盖层级生效）
         this.children.sort(function (a, b) {
@@ -130,6 +138,40 @@
 
         bindAlphaHitTest(button1);
         bindAlphaHitTest(button2);
+    };
+
+    // 移除按钮和背景
+    Scene_Map.prototype.hideToolbarButtons = function () {
+        if (this._mapButtons) {
+            this._mapButtons.forEach(function (btn) {
+                this.removeChild(btn);
+                if (btn.destroy) btn.destroy();
+            }, this);
+            this._mapButtons = null;
+        }
+
+        if (this._mapToolbarBackground) {
+            this.removeChild(this._mapToolbarBackground);
+            if (this._mapToolbarBackground.destroy) this._mapToolbarBackground.destroy();
+            this._mapToolbarBackground = null;
+        }
+    };
+
+    // 插件指令：Toolbar Show / Toolbar Hide
+    var _Game_Interpreter_pluginCommand = Game_Interpreter.prototype.pluginCommand;
+    Game_Interpreter.prototype.pluginCommand = function (command, args) {
+        _Game_Interpreter_pluginCommand.call(this, command, args);
+        if (command === 'Toolbar') {
+            if (args[0] === 'Show') {
+                if (SceneManager._scene instanceof Scene_Map) {
+                    SceneManager._scene.createMapButtons();
+                }
+            } else if (args[0] === 'Hide') {
+                if (SceneManager._scene instanceof Scene_Map) {
+                    SceneManager._scene.hideToolbarButtons();
+                }
+            }
+        }
     };
 
     /**
