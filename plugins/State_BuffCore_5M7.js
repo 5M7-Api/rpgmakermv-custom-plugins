@@ -1,5 +1,5 @@
 /*:
- * @plugindesc 特殊状态机制扩展插件（延迟伤害类）
+ * @plugindesc 特殊状态机制扩展插件（核心机制类）
  * @author 5M7-Api
  * @link https://github.com/5M7-Api/rpgmakermv-plugins-coding-course
  * 
