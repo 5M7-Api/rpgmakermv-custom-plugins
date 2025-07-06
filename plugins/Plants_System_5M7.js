@@ -55,7 +55,7 @@
  * 
  * 此脚本用于执行一次铲除事件。将清除掉已种植植物对象。
  * 
- * PlanManager.harvest(this,[x]);
+ * PlanManager.harvest(this);
  * 
  * 此脚本用于执行一次收获事件。将清除掉已种植植物对象。
  * 
