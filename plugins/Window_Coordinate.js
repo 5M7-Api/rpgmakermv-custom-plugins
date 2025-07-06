@@ -1,7 +1,7 @@
 /*:
  * @plugindesc 在游戏画面上实时显示鼠标的 X 和 Y 坐标（包含最大值）
  * @author 5M7_Api
- * @link https://github.com/5M7-Api/rpgmakermv-plugins-coding-course
+ * @link https://github.com/5M7-Api/rpgmakermv-custom-plugins
  * @help
  * 此插件将在游戏画面上实时显示点击位置的鼠标的 X 和 Y 坐标，长按鼠标可以动态变化。附带最大游戏渲染器尺寸。
  *

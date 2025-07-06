@@ -2,7 +2,7 @@
 /*:
  * @plugindesc 种植扩展系统
  * @author 5M7_Api
- * @link https://github.com/5M7-Api/rpgmakermv-plugins-coding-course
+ * @link https://github.com/5M7-Api/rpgmakermv-custom-plugins
  * @help
  * 
  * 此插件基于MOG_TimeSystem.js插件的基础上，扩展一系列针对植物种植的功能和机制。

@@ -2,7 +2,7 @@
  * @target MV
  * @plugindesc 将素材创建成一个顶部导航栏的样式，并形成交互按钮。
  * @author 5M7_Api
- * @link https://github.com/5M7-Api/rpgmakermv-plugins-coding-course
+ * @link https://github.com/5M7-Api/rpgmakermv-custom-plugins
  * @help 
  * 
  * 该插件将在游戏地图画面上创建一个顶部导航栏，包含背景和按钮，可自定义扩展。

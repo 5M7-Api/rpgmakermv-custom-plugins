@@ -1,7 +1,7 @@
 /*:
  * @plugindesc 技能类型机制扩展插件
  * @author 5M7_Api
- * @link https://github.com/5M7-Api/rpgmakermv-plugins-coding-course
+ * @link https://github.com/5M7-Api/rpgmakermv-custom-plugins
  * 
  * @help
  * 

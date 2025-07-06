@@ -2,7 +2,7 @@
  * @target MV
  * @plugindesc 地图场景使用虚拟按钮替代点击事件（已屏蔽点击事件）
  * @author 5M7_Api
- * @link https://github.com/5M7-Api/rpgmakermv-plugins-coding-course
+ * @link https://github.com/5M7-Api/rpgmakermv-custom-plugins
  * @help 
  * 
  * 地图场景使用system文件夹内的图像作为虚拟按钮的可交互元素。
