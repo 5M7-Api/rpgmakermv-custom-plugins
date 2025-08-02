@@ -324,6 +324,13 @@ var PLANT_CONFIG = {
         * 一张图就放一种植物的全部可能的成长阶段（索引0开始，实际地图事件为默认的其他精灵图或无图片）
         */
         phase: [
+            /**
+             * 每个阶段的事件基础信息
+             * image: 图片名称（与img/characters/plant1.png对应）
+             * time: 达到该阶段的时间（秒）
+             * eventSwitch: 该阶段的事件页独立开关（A/B/C）
+             * imageIndex: 该阶段的精灵图索引（0开始）
+             */
             { image: 'plant3', time: 0, eventSwitch: SELFSWITCH.A, imageIndex: 0 },
             { image: 'plant3', time: 10, eventSwitch: SELFSWITCH.A, imageIndex: 1 },
             { image: 'plant3', time: 20, eventSwitch: SELFSWITCH.A, imageIndex: 2 },
