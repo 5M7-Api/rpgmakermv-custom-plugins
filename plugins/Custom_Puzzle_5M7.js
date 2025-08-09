@@ -17,7 +17,7 @@
  * 
  * PuzzleManager.isQuit();
  * 
- * 判断玩家是否中途退出了场景。
+ * 判断玩家是否正常退出了场景。
  * 
  * PuzzleManager.isSovled();
  * 
