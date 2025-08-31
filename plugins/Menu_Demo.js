@@ -328,7 +328,6 @@
     Window_Demo3.prototype.constructor = Window_Demo3;
 
     Window_Demo3.prototype.initialize = function (x, y, width, height) {
-        // var width = Graphics.boxWidth / 2;
         Window_Base.prototype.initialize.call(this, x, y, width, height);
         this._text = ""; // Demo3应显示的文本内容
     }
@@ -336,7 +335,6 @@
     // 设置Demo3的文本
     Window_Demo3.prototype.setText = function (text) {
         if (this._text !== text) {
-            // console.log('[widnow_demo3]setText...测试', text);
             this._text = text;
             this.refresh();
         }
@@ -349,8 +347,6 @@
 
     // 设置关联的物品的逻辑
     Window_Demo3.prototype.setItem = function (item) {
-        // TODO: 配置具体信息
-        // this.setText(item ? item.description : "");
         this.genText(item ? item : null);
     }
 
