@@ -9,7 +9,7 @@
  * 本插件主要用于实现该功能的模板代码示例。
  */
 (function () {
-    var parameters = PluginManager.parameters('Menu_Demo');
+    var parameters = PluginManager.parameters('Menu_Demo_5M7');
 
     // 生成Demo3窗口的文本内容
     function genDemo3Text(item) {
